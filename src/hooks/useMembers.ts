@@ -172,3 +172,28 @@ export function useAddMemberNote() {
     },
   })
 }
+
+export function useMemberById(memberId: string) {
+  return useQuery({
+    queryKey: ['member', memberId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('members')
+        .select(`
+          *,
+          member_subscriptions (
+            id, start_date, end_date, status, plan_id,
+            membership_plans (name, duration_days, price)
+          ),
+          member_notes (id, note, created_at, created_by)
+        `)
+        .eq('id', memberId)
+        .single()
+
+      if (error) throw error
+      return data
+    },
+    enabled: !!memberId,
+  })
+}
+

@@ -4,12 +4,13 @@ import {
   TableHead, TableRow, Typography, TextField, Button,
   InputAdornment, Stack, Skeleton, Chip, Avatar,
 } from '@mui/material'
-import { Search, Add, Receipt } from '@mui/icons-material'
+import { Search, Add, Receipt, Download } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import { TopBar } from '@/components/layout/TopBar'
 import { EmptyState } from '@/components/shared/EmptyState'
 import { usePayments, useTodayRevenue } from '@/hooks/usePayments'
 import { formatCurrency, formatDateTime } from '@/utils/formatters'
+import { exportPayments } from '@/utils/excelExport'
 
 const METHOD_LABEL: Record<string, string> = {
   cash: '💵 Cash',
@@ -48,14 +49,25 @@ export default function PaymentsPage() {
       <TopBar
         title="Payments"
         actions={
-          <Button
-            variant="contained"
-            startIcon={<Add />}
-            size="small"
-            onClick={() => navigate('/payments/record')}
-          >
-            Record Payment
-          </Button>
+          <Stack direction="row" spacing={1}>
+            <Button
+              variant="outlined"
+              startIcon={<Download />}
+              size="small"
+              onClick={() => exportPayments(filtered)}
+              disabled={!filtered.length}
+            >
+              Export Excel
+            </Button>
+            <Button
+              variant="contained"
+              startIcon={<Add />}
+              size="small"
+              onClick={() => navigate('/payments/record')}
+            >
+              Record Payment
+            </Button>
+          </Stack>
         }
       />
       <Box sx={{ pt: '64px', p: 3 }}>

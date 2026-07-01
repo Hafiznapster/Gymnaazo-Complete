@@ -5,13 +5,14 @@ import {
   InputAdornment, MenuItem, Select, FormControl, InputLabel,
   Avatar, Stack, Skeleton, Chip,
 } from '@mui/material'
-import { Search, Add, PersonAdd } from '@mui/icons-material'
+import { Search, Add, PersonAdd, Download } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import { TopBar } from '@/components/layout/TopBar'
 import { StatusBadge } from '@/components/shared/StatusBadge'
 import { EmptyState } from '@/components/shared/EmptyState'
 import { useMembers } from '@/hooks/useMembers'
 import { formatDate, formatPhone } from '@/utils/formatters'
+import { exportMembers } from '@/utils/excelExport'
 import type { MemberStatus } from '@/types/database'
 
 export default function MembersPage() {
@@ -34,14 +35,25 @@ export default function MembersPage() {
       <TopBar
         title="Members"
         actions={
-          <Button
-            variant="contained"
-            startIcon={<PersonAdd />}
-            onClick={() => navigate('/members/register')}
-            size="small"
-          >
-            Register Member
-          </Button>
+          <Stack direction="row" spacing={1}>
+            <Button
+              variant="outlined"
+              startIcon={<Download />}
+              onClick={() => exportMembers(members ?? [])}
+              size="small"
+              disabled={!members?.length}
+            >
+              Export Excel
+            </Button>
+            <Button
+              variant="contained"
+              startIcon={<PersonAdd />}
+              onClick={() => navigate('/members/register')}
+              size="small"
+            >
+              Register Member
+            </Button>
+          </Stack>
         }
       />
       <Box sx={{ pt: '64px', p: 3 }}>

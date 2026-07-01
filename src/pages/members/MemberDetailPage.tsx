@@ -8,7 +8,7 @@ import {
 } from '@mui/material'
 import {
   ArrowBack, Payment, Edit, FitnessCenter,
-  CheckCircle, Receipt,
+  CheckCircle, Receipt, MonitorWeight,
 } from '@mui/icons-material'
 import { TopBar } from '@/components/layout/TopBar'
 import { StatusBadge } from '@/components/shared/StatusBadge'
@@ -181,6 +181,14 @@ export default function MemberDetailPage() {
               size="small"
             >
               Record Payment
+            </Button>
+            <Button
+              variant="outlined"
+              startIcon={<MonitorWeight />}
+              onClick={() => navigate(`/members/${id}/body`)}
+              size="small"
+            >
+              Body Progress
             </Button>
           </>
         }

@@ -3,7 +3,7 @@ import {
   Box, Card, CardContent, Typography, Stack, Chip, Button,
   TextField, InputAdornment, Tab, Tabs, Avatar, Skeleton,
 } from '@mui/material'
-import { Schedule, Search, Refresh, Phone } from '@mui/icons-material'
+import { Schedule, Search, Refresh, Phone, Download } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import { TopBar } from '@/components/layout/TopBar'
 import { EmptyState } from '@/components/shared/EmptyState'
@@ -12,6 +12,7 @@ import {
   formatDate, daysUntilExpiry, getExpiryUrgency,
   EXPIRY_URGENCY_COLORS, EXPIRY_URGENCY_LABELS,
 } from '@/utils/formatters'
+import { exportExpiryList } from '@/utils/excelExport'
 
 function ExpiryCard({ sub, onClick }: { sub: any; onClick: () => void }) {
   const days = daysUntilExpiry(sub.end_date)
@@ -117,7 +118,20 @@ export default function ExpiryPage() {
 
   return (
     <Box>
-      <TopBar title="Expiry Management" />
+      <TopBar
+        title="Expiry Management"
+        actions={
+          <Button
+            variant="outlined"
+            startIcon={<Download />}
+            size="small"
+            onClick={() => exportExpiryList(filtered)}
+            disabled={!filtered.length}
+          >
+            Export Excel
+          </Button>
+        }
+      />
       <Box sx={{ pt: '64px', p: 3 }}>
         {/* Summary chips */}
         <Stack direction="row" spacing={1.5} mb={3} flexWrap="wrap">

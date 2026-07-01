@@ -4,8 +4,9 @@ import {
   ListItemText, Typography, Divider, Avatar, Chip,
 } from '@mui/material'
 import {
-  Dashboard, People, FitnessCenter, Payment,
-  CheckCircle, Schedule,
+  Dashboard, People, FitnessCenter, Payment, BarChart,
+  CheckCircle, Schedule, SupervisorAccount, Settings,
+  WhatsApp, QrCode2,
 } from '@mui/icons-material'
 import { useAuthStore } from '@/store/authStore'
 import type { StaffRole } from '@/types/database'
@@ -17,15 +18,26 @@ interface NavItem {
   path: string
   icon: React.ReactNode
   roles: StaffRole[]
+  section?: string
+  badge?: 'pending'
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: 'Dashboard',  path: '/dashboard',  icon: <Dashboard />,     roles: ['owner', 'manager', 'receptionist', 'trainer'] },
-  { label: 'Members',    path: '/members',    icon: <People />,        roles: ['owner', 'manager', 'receptionist'] },
-  { label: 'Plans',      path: '/plans',      icon: <FitnessCenter />, roles: ['owner', 'manager'] },
-  { label: 'Payments',   path: '/payments',   icon: <Payment />,       roles: ['owner', 'manager', 'receptionist'] },
-  { label: 'Attendance', path: '/attendance', icon: <CheckCircle />,   roles: ['owner', 'manager', 'receptionist'] },
-  { label: 'Expiry',     path: '/expiry',     icon: <Schedule />,      roles: ['owner', 'manager', 'receptionist'] },
+  // ── Core Operations
+  { label: 'Dashboard',    path: '/dashboard',    icon: <Dashboard />,          roles: ['owner', 'manager', 'receptionist', 'trainer'], section: 'Core' },
+  { label: 'Members',      path: '/members',      icon: <People />,             roles: ['owner', 'manager', 'receptionist'] },
+  { label: 'Plans',        path: '/plans',        icon: <FitnessCenter />,      roles: ['owner', 'manager'] },
+  { label: 'Payments',     path: '/payments',     icon: <Payment />,            roles: ['owner', 'manager', 'receptionist'] },
+  { label: 'Attendance',   path: '/attendance',   icon: <CheckCircle />,        roles: ['owner', 'manager', 'receptionist'] },
+  { label: 'Expiry',       path: '/expiry',       icon: <Schedule />,           roles: ['owner', 'manager', 'receptionist'] },
+  // ── Phase 2
+  { label: 'Analytics',    path: '/analytics',    icon: <BarChart />,           roles: ['owner', 'manager'],                               section: 'Phase 2' },
+  { label: 'Personal Training', path: '/pt',      icon: <FitnessCenter />,      roles: ['owner', 'manager', 'trainer'] },
+  { label: 'Staff',        path: '/staff',        icon: <SupervisorAccount />,  roles: ['owner', 'manager'] },
+  { label: 'Settings',     path: '/settings',     icon: <Settings />,           roles: ['owner'] },
+  // ── Pending Integrations
+  { label: 'WhatsApp',     path: '/integrations/whatsapp',  icon: <WhatsApp />,  roles: ['owner', 'manager'], section: 'Integrations', badge: 'pending' },
+  { label: 'Razorpay QR',  path: '/integrations/razorpay',  icon: <QrCode2 />,   roles: ['owner'],                                          badge: 'pending' },
 ]
 
 const ROLE_COLOR: Record<StaffRole, 'primary' | 'secondary' | 'default' | 'warning'> = {
@@ -90,54 +102,57 @@ export function Sidebar() {
 
       {/* Navigation */}
       <List sx={{ flex: 1, px: 1.5, py: 2, overflowY: 'auto' }}>
-        {visibleItems.map((item) => {
+        {visibleItems.map((item, idx) => {
           const isActive =
             location.pathname === item.path ||
             (item.path !== '/dashboard' && location.pathname.startsWith(item.path))
+          const prevItem = visibleItems[idx - 1]
+          const showSection = item.section && (!prevItem || prevItem.section !== item.section)
 
           return (
-            <ListItem key={item.path} disablePadding sx={{ mb: 0.5 }}>
-              <ListItemButton
-                component={NavLink}
-                to={item.path}
-                selected={isActive}
-                sx={{
-                  borderRadius: 2,
-                  py: 1,
-                  '&.Mui-selected': {
-                    bgcolor: 'rgba(108,99,255,0.14)',
-                    color: 'primary.main',
-                    '& .MuiListItemIcon-root': { color: 'primary.main' },
-                    '&:hover': { bgcolor: 'rgba(108,99,255,0.20)' },
-                  },
-                  '&:hover:not(.Mui-selected)': {
-                    bgcolor: 'rgba(255,255,255,0.04)',
-                  },
-                }}
-              >
-                <ListItemIcon sx={{ minWidth: 38, color: isActive ? 'primary.main' : 'text.secondary' }}>
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText
-                  primary={item.label}
-                  primaryTypographyProps={{
-                    fontWeight: isActive ? 600 : 400,
-                    fontSize: 14,
-                    color: isActive ? 'primary.main' : 'text.primary',
+            <Box key={item.path}>
+              {showSection && (
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ px: 1, pt: idx > 0 ? 1.5 : 0, pb: 0.5, display: 'block', fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.8, opacity: 0.6 }}
+                >
+                  {item.section}
+                </Typography>
+              )}
+              <ListItem disablePadding sx={{ mb: 0.5 }}>
+                <ListItemButton
+                  component={NavLink}
+                  to={item.path}
+                  selected={isActive}
+                  sx={{
+                    borderRadius: 2,
+                    py: 1,
+                    '&.Mui-selected': {
+                      bgcolor: 'rgba(108,99,255,0.14)',
+                      color: 'primary.main',
+                      '& .MuiListItemIcon-root': { color: 'primary.main' },
+                      '&:hover': { bgcolor: 'rgba(108,99,255,0.20)' },
+                    },
+                    '&:hover:not(.Mui-selected)': { bgcolor: 'rgba(255,255,255,0.04)' },
                   }}
-                />
-                {isActive && (
-                  <Box
-                    sx={{
-                      width: 3, height: 20, borderRadius: 2,
-                      bgcolor: 'primary.main',
-                      position: 'absolute',
-                      right: 0,
-                    }}
+                >
+                  <ListItemIcon sx={{ minWidth: 38, color: isActive ? 'primary.main' : item.badge === 'pending' ? 'warning.main' : 'text.secondary' }}>
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={item.label}
+                    primaryTypographyProps={{ fontWeight: isActive ? 600 : 400, fontSize: 14, color: isActive ? 'primary.main' : 'text.primary' }}
                   />
-                )}
-              </ListItemButton>
-            </ListItem>
+                  {item.badge === 'pending' && (
+                    <Chip label="Pending" size="small" color="warning" sx={{ height: 16, fontSize: 9, fontWeight: 700 }} />
+                  )}
+                  {isActive && (
+                    <Box sx={{ width: 3, height: 20, borderRadius: 2, bgcolor: 'primary.main', position: 'absolute', right: 0 }} />
+                  )}
+                </ListItemButton>
+              </ListItem>
+            </Box>
           )
         })}
       </List>

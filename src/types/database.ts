@@ -188,6 +188,107 @@ export interface Database {
         Insert: Omit<MemberNote, 'id' | 'created_at'>
         Update: Partial<MemberNote>
       }
+      body_measurements: {
+        Row: BodyMeasurement
+        Insert: Omit<BodyMeasurement, 'id' | 'created_at'>
+        Update: Partial<BodyMeasurement>
+      }
+      pt_packages: {
+        Row: PTPackage
+        Insert: Omit<PTPackage, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<PTPackage>
+      }
+      pt_enrollments: {
+        Row: PTEnrollment
+        Insert: Omit<PTEnrollment, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<PTEnrollment>
+      }
+      pt_sessions: {
+        Row: PTSession
+        Insert: Omit<PTSession, 'id' | 'created_at'>
+        Update: Partial<PTSession>
+      }
+      trainer_member_assignments: {
+        Row: TrainerMemberAssignment
+        Insert: Omit<TrainerMemberAssignment, 'id' | 'assigned_at'>
+        Update: Partial<TrainerMemberAssignment>
+      }
     }
   }
 }
+
+// ─── Phase 2 Types ────────────────────────────────────────────────────────────
+
+export interface BodyMeasurement {
+  id: string
+  gym_id: string
+  member_id: string
+  recorded_by: string | null
+  recorded_at: string
+  weight_kg: number | null
+  height_cm: number | null
+  body_fat_pct: number | null
+  chest_cm: number | null
+  waist_cm: number | null
+  hips_cm: number | null
+  arms_cm: number | null
+  thighs_cm: number | null
+  notes: string | null
+  created_at: string
+}
+
+export interface PTPackage {
+  id: string
+  gym_id: string
+  name: string
+  sessions_count: number
+  validity_days: number
+  price: number
+  description: string | null
+  is_active: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface PTEnrollment {
+  id: string
+  gym_id: string
+  member_id: string
+  trainer_id: string
+  package_id: string
+  payment_id: string | null
+  sessions_total: number
+  sessions_used: number
+  start_date: string
+  expires_at: string | null
+  status: 'active' | 'completed' | 'cancelled' | 'expired'
+  notes: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface PTSession {
+  id: string
+  gym_id: string
+  enrollment_id: string
+  member_id: string
+  trainer_id: string
+  session_date: string
+  session_time: string | null
+  duration_mins: number | null
+  status: 'completed' | 'no_show' | 'cancelled'
+  notes: string | null
+  member_rating: number | null
+  created_at: string
+}
+
+export interface TrainerMemberAssignment {
+  id: string
+  gym_id: string
+  trainer_id: string
+  member_id: string
+  assigned_by: string | null
+  assigned_at: string
+  is_active: boolean
+}
+
