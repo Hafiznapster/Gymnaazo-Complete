@@ -69,7 +69,7 @@ function EditDialog({
             You are editing your own profile. Role changes will take effect on next login.
           </Alert>
         )}
-        <Stack spacing={2} mt={1}>
+        <Stack spacing={2} sx={{ mt: 1 }}>
           <TextField label="Full Name" fullWidth {...register('name')} error={!!errors.name} helperText={errors.name?.message} />
           <TextField label="Phone" fullWidth {...register('phone')} />
           <FormControl fullWidth>
@@ -164,7 +164,7 @@ export default function StaffPage() {
                   : (staff ?? []).map((s) => (
                       <TableRow key={s.id} hover>
                         <TableCell>
-                          <Stack direction="row" alignItems="center" spacing={1.5}>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                             <Avatar
                               sx={{
                                 width: 36, height: 36,
@@ -175,14 +175,14 @@ export default function StaffPage() {
                               {s.name[0].toUpperCase()}
                             </Avatar>
                             <Box>
-                              <Typography variant="body2" fontWeight={600}>
+                              <Typography variant="body2" sx={{ fontWeight: 600 }}>
                                 {s.name}
                                 {s.id === currentUser?.id && (
                                   <Typography
                                     component="span"
                                     variant="caption"
                                     color="primary.main"
-                                    ml={0.5}
+                                    sx={{ ml: 0.5 }}
                                   >
                                     (you)
                                   </Typography>
@@ -192,7 +192,7 @@ export default function StaffPage() {
                                 {s.email}
                               </Typography>
                             </Box>
-                          </Stack>
+                          </Box>
                         </TableCell>
                         <TableCell>
                           <Chip
@@ -217,7 +217,7 @@ export default function StaffPage() {
                           />
                         </TableCell>
                         <TableCell align="right">
-                          <Stack direction="row" spacing={0.5} justifyContent="flex-end">
+                          <Box sx={{ display: 'flex', gap: 0.5, justifyContent: 'flex-end' }}>
                             <Tooltip title="Edit">
                               <IconButton size="small" onClick={() => setEditTarget(s)}>
                                 <Edit fontSize="small" />
@@ -231,7 +231,7 @@ export default function StaffPage() {
                                 disabled={s.id === currentUser?.id}
                               />
                             </Tooltip>
-                          </Stack>
+                          </Box>
                         </TableCell>
                       </TableRow>
                     ))}

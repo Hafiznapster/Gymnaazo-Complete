@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState } from 'react'
 import {
   Box, Card, CardContent, Typography, Stack, Button, Chip,

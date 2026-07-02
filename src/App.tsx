@@ -5,6 +5,7 @@ import { AppShell } from '@/components/layout/AppShell'
 import { LoadingScreen } from '@/components/shared/LoadingScreen'
 import { useAuthInit } from '@/hooks/useAuth'
 import LoginPage from '@/pages/auth/LoginPage'
+import { PortalProtectedRoute } from '@/components/auth/PortalProtectedRoute'
 
 // ─── Phase 1 Pages ────────────────────────────────────────────────────────────
 const DashboardPage = lazy(() => import('@/pages/dashboard/DashboardPage'))
@@ -27,6 +28,21 @@ const PTSessionsPage = lazy(() => import('@/pages/pt/PTSessionsPage'))
 // ─── Phase 2 Pages — Integration Stubs (pending API keys) ────────────────────
 const WhatsAppPage = lazy(() => import('@/pages/integrations/WhatsAppPage'))
 const RazorpayPage = lazy(() => import('@/pages/integrations/RazorpayPage'))
+
+// ─── Phase 3 Pages — Member Portal PWA ───────────────────────────────────────
+const PortalLoginPage = lazy(() => import('@/pages/portal/PortalLoginPage'))
+const PortalDashboardPage = lazy(() => import('@/pages/portal/PortalDashboardPage'))
+const PortalProfilePage = lazy(() => import('@/pages/portal/PortalProfilePage'))
+const PortalAttendancePage = lazy(() => import('@/pages/portal/PortalAttendancePage'))
+const PortalPTPage = lazy(() => import('@/pages/portal/PortalPTPage'))
+const PortalClassesPage = lazy(() => import('@/pages/portal/PortalClassesPage'))
+
+// ─── Phase 3 & 4 Pages — Staff/Trainer Tools ─────────────────────────────────
+const WorkoutPlanBuilder = lazy(() => import('@/pages/workouts/WorkoutPlanBuilder'))
+const DietPlanBuilder = lazy(() => import('@/pages/diets/DietPlanBuilder'))
+const GroupClassesPage = lazy(() => import('@/pages/classes/GroupClassesPage'))
+const LeadsPage = lazy(() => import('@/pages/crm/LeadsPage'))
+const ExpensesPage = lazy(() => import('@/pages/finance/ExpensesPage'))
 
 export default function App() {
   useAuthInit()
@@ -63,7 +79,25 @@ export default function App() {
           {/* Phase 2 — Pending Integrations */}
           <Route path="integrations/whatsapp" element={<WhatsAppPage />} />
           <Route path="integrations/razorpay" element={<RazorpayPage />} />
+          {/* Phase 3 & 4 */}
+          <Route path="workouts" element={<WorkoutPlanBuilder />} />
+          <Route path="diets" element={<DietPlanBuilder />} />
+          <Route path="classes" element={<GroupClassesPage />} />
+          <Route path="crm" element={<LeadsPage />} />
+          <Route path="finance" element={<ExpensesPage />} />
         </Route>
+        
+        {/* Phase 3 — Member Portal */}
+        <Route path="/portal/login" element={<PortalLoginPage />} />
+        <Route path="/portal" element={<PortalProtectedRoute />}>
+          <Route index element={<Navigate to="/portal/dashboard" replace />} />
+          <Route path="dashboard" element={<PortalDashboardPage />} />
+          <Route path="profile" element={<PortalProfilePage />} />
+          <Route path="attendance" element={<PortalAttendancePage />} />
+          <Route path="pt" element={<PortalPTPage />} />
+          <Route path="classes" element={<PortalClassesPage />} />
+        </Route>
+
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </Suspense>
