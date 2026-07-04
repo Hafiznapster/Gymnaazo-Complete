@@ -11,7 +11,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- GYMS (tenant root)
 -- ============================================================
 CREATE TABLE gyms (
-  id             uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id             uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   name           text NOT NULL,
   slug           text UNIQUE NOT NULL,
   logo_url       text,
@@ -31,7 +31,7 @@ CREATE TABLE gyms (
 -- STAFF USERS
 -- ============================================================
 CREATE TABLE staff_users (
-  id         uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id         uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   gym_id     uuid NOT NULL REFERENCES gyms(id) ON DELETE CASCADE,
   user_id    uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   name       text NOT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE staff_users (
 -- MEMBERS
 -- ============================================================
 CREATE TABLE members (
-  id                uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id                uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   gym_id            uuid NOT NULL REFERENCES gyms(id) ON DELETE CASCADE,
   member_code       text NOT NULL,
   name              text NOT NULL,
@@ -81,7 +81,7 @@ CREATE TABLE members (
 -- MEMBERSHIP PLANS
 -- ============================================================
 CREATE TABLE membership_plans (
-  id            uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id            uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   gym_id        uuid NOT NULL REFERENCES gyms(id) ON DELETE CASCADE,
   name          text NOT NULL,
   category      text,
@@ -98,7 +98,7 @@ CREATE TABLE membership_plans (
 -- MEMBER SUBSCRIPTIONS
 -- ============================================================
 CREATE TABLE member_subscriptions (
-  id            uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id            uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   gym_id        uuid NOT NULL REFERENCES gyms(id) ON DELETE CASCADE,
   member_id     uuid NOT NULL REFERENCES members(id) ON DELETE CASCADE,
   plan_id       uuid NOT NULL REFERENCES membership_plans(id),
@@ -116,7 +116,7 @@ CREATE TABLE member_subscriptions (
 -- PAYMENTS
 -- ============================================================
 CREATE TABLE payments (
-  id                   uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id                   uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   gym_id               uuid NOT NULL REFERENCES gyms(id) ON DELETE CASCADE,
   member_id            uuid NOT NULL REFERENCES members(id) ON DELETE CASCADE,
   subscription_id      uuid REFERENCES member_subscriptions(id) ON DELETE SET NULL,
@@ -146,7 +146,7 @@ CREATE TABLE payments (
 -- ATTENDANCE LOGS
 -- ============================================================
 CREATE TABLE attendance_logs (
-  id            uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id            uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   gym_id        uuid NOT NULL REFERENCES gyms(id) ON DELETE CASCADE,
   member_id     uuid NOT NULL REFERENCES members(id) ON DELETE CASCADE,
   check_in_at   timestamptz NOT NULL DEFAULT now(),
@@ -159,7 +159,7 @@ CREATE TABLE attendance_logs (
 -- MEMBER NOTES
 -- ============================================================
 CREATE TABLE member_notes (
-  id          uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   gym_id      uuid NOT NULL REFERENCES gyms(id) ON DELETE CASCADE,
   member_id   uuid NOT NULL REFERENCES members(id) ON DELETE CASCADE,
   note        text NOT NULL,

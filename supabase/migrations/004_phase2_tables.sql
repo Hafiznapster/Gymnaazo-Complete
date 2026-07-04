@@ -9,7 +9,7 @@
 -- BODY MEASUREMENTS
 -- ============================================================
 CREATE TABLE body_measurements (
-  id              uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id              uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   gym_id          uuid NOT NULL REFERENCES gyms(id) ON DELETE CASCADE,
   member_id       uuid NOT NULL REFERENCES members(id) ON DELETE CASCADE,
   recorded_by     uuid REFERENCES staff_users(id) ON DELETE SET NULL,
@@ -32,7 +32,7 @@ CREATE INDEX idx_body_measurements_member ON body_measurements(member_id, record
 -- PT PACKAGES
 -- ============================================================
 CREATE TABLE pt_packages (
-  id              uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id              uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   gym_id          uuid NOT NULL REFERENCES gyms(id) ON DELETE CASCADE,
   name            text NOT NULL,
   sessions_count  int NOT NULL DEFAULT 10,
@@ -51,7 +51,7 @@ CREATE TRIGGER pt_packages_updated_at
 -- PT ENROLLMENTS (member buys a PT package)
 -- ============================================================
 CREATE TABLE pt_enrollments (
-  id              uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id              uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   gym_id          uuid NOT NULL REFERENCES gyms(id) ON DELETE CASCADE,
   member_id       uuid NOT NULL REFERENCES members(id) ON DELETE CASCADE,
   trainer_id      uuid NOT NULL REFERENCES staff_users(id) ON DELETE RESTRICT,
@@ -78,7 +78,7 @@ CREATE INDEX idx_pt_enrollments_trainer ON pt_enrollments(trainer_id);
 -- PT SESSIONS (individual session log)
 -- ============================================================
 CREATE TABLE pt_sessions (
-  id              uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id              uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   gym_id          uuid NOT NULL REFERENCES gyms(id) ON DELETE CASCADE,
   enrollment_id   uuid NOT NULL REFERENCES pt_enrollments(id) ON DELETE CASCADE,
   member_id       uuid NOT NULL REFERENCES members(id) ON DELETE CASCADE,
@@ -100,7 +100,7 @@ CREATE INDEX idx_pt_sessions_trainer ON pt_sessions(trainer_id, session_date DES
 -- TRAINER–MEMBER ASSIGNMENTS
 -- ============================================================
 CREATE TABLE trainer_member_assignments (
-  id              uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id              uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   gym_id          uuid NOT NULL REFERENCES gyms(id) ON DELETE CASCADE,
   trainer_id      uuid NOT NULL REFERENCES staff_users(id) ON DELETE CASCADE,
   member_id       uuid NOT NULL REFERENCES members(id) ON DELETE CASCADE,

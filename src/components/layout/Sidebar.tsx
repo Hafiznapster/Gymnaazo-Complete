@@ -7,7 +7,7 @@ import {
   Dashboard, People, FitnessCenter, Payment, BarChart,
   CheckCircle, Schedule, SupervisorAccount, Settings,
   WhatsApp, QrCode2, DirectionsRun, Restaurant, EventAvailable,
-  Campaign, AccountBalanceWallet,
+  Campaign, AccountBalanceWallet, Inventory, Forum, TabletMac
 } from '@mui/icons-material'
 import { useAuthStore } from '@/store/authStore'
 import type { StaffRole } from '@/types/database'
@@ -42,6 +42,11 @@ const NAV_ITEMS: NavItem[] = [
   { label: 'Classes',      path: '/classes',      icon: <EventAvailable />,     roles: ['owner', 'manager', 'receptionist'] },
   { label: 'Leads (CRM)',  path: '/crm',          icon: <Campaign />,           roles: ['owner', 'manager'], section: 'Finance & Growth' },
   { label: 'Expenses',     path: '/finance',      icon: <AccountBalanceWallet />,roles: ['owner', 'manager'] },
+  // ── Phase 5
+  { label: 'Equipment',    path: '/equipment',    icon: <FitnessCenter />,      roles: ['owner', 'manager'], section: 'Assets & Operations' },
+  { label: 'Inventory',    path: '/inventory',    icon: <Inventory />,          roles: ['owner', 'manager'] },
+  { label: 'Feedback',     path: '/feedback',     icon: <Forum />,              roles: ['owner', 'manager'] },
+  { label: 'Launch Kiosk', path: '/kiosk',        icon: <TabletMac />,          roles: ['owner', 'manager', 'receptionist'] },
   // ── Pending Integrations
   { label: 'WhatsApp',     path: '/integrations/whatsapp',  icon: <WhatsApp />,  roles: ['owner', 'manager'], section: 'Integrations', badge: 'pending' },
   { label: 'Razorpay QR',  path: '/integrations/razorpay',  icon: <QrCode2 />,   roles: ['owner'],                                          badge: 'pending' },

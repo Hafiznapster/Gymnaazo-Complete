@@ -1,6 +1,6 @@
 import { Outlet, NavLink, useLocation } from 'react-router-dom'
 import { Box, Paper, BottomNavigation, BottomNavigationAction, Typography, Avatar } from '@mui/material'
-import { Dashboard, FitnessCenter, AssignmentTurnedIn, Person, EventAvailable } from '@mui/icons-material'
+import { Dashboard, FitnessCenter, AssignmentTurnedIn, Person, EventAvailable, Forum } from '@mui/icons-material'
 import { useAuthStore } from '@/store/authStore'
 
 export function PortalLayout() {
@@ -9,6 +9,7 @@ export function PortalLayout() {
 
   // Find active tab value based on route
   const getActiveTab = () => {
+    if (location.pathname.includes('/portal/feedback')) return 5
     if (location.pathname.includes('/portal/profile')) return 4
     if (location.pathname.includes('/portal/attendance')) return 3
     if (location.pathname.includes('/portal/classes')) return 2
@@ -103,6 +104,7 @@ export function PortalLayout() {
           <BottomNavigationAction component={NavLink} to="/portal/classes" label="Classes" icon={<EventAvailable />} />
           <BottomNavigationAction component={NavLink} to="/portal/attendance" label="Check-in" icon={<AssignmentTurnedIn />} />
           <BottomNavigationAction component={NavLink} to="/portal/profile" label="Profile" icon={<Person />} />
+          <BottomNavigationAction component={NavLink} to="/portal/feedback" label="Feedback" icon={<Forum />} />
         </BottomNavigation>
       </Paper>
     </Box>

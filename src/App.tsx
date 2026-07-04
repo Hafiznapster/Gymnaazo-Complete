@@ -43,6 +43,12 @@ const DietPlanBuilder = lazy(() => import('@/pages/diets/DietPlanBuilder'))
 const GroupClassesPage = lazy(() => import('@/pages/classes/GroupClassesPage'))
 const LeadsPage = lazy(() => import('@/pages/crm/LeadsPage'))
 const ExpensesPage = lazy(() => import('@/pages/finance/ExpensesPage'))
+// ─── Phase 5 Pages ───────────────────────────────────────────────────────────
+const EquipmentPage = lazy(() => import('@/pages/equipment/EquipmentPage'))
+const InventoryPage = lazy(() => import('@/pages/inventory/InventoryPage'))
+const FeedbackPage = lazy(() => import('@/pages/feedback/FeedbackPage'))
+const PortalFeedbackPage = lazy(() => import('@/pages/portal/PortalFeedbackPage'))
+const KioskCheckInPage = lazy(() => import('@/pages/kiosk/KioskCheckInPage'))
 
 export default function App() {
   useAuthInit()
@@ -51,6 +57,7 @@ export default function App() {
     <Suspense fallback={<LoadingScreen />}>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/kiosk" element={<KioskCheckInPage />} />
         <Route
           path="/"
           element={
@@ -85,6 +92,10 @@ export default function App() {
           <Route path="classes" element={<GroupClassesPage />} />
           <Route path="crm" element={<LeadsPage />} />
           <Route path="finance" element={<ExpensesPage />} />
+          {/* Phase 5 */}
+          <Route path="equipment" element={<EquipmentPage />} />
+          <Route path="inventory" element={<InventoryPage />} />
+          <Route path="feedback" element={<FeedbackPage />} />
         </Route>
         
         {/* Phase 3 — Member Portal */}
@@ -96,6 +107,7 @@ export default function App() {
           <Route path="attendance" element={<PortalAttendancePage />} />
           <Route path="pt" element={<PortalPTPage />} />
           <Route path="classes" element={<PortalClassesPage />} />
+          <Route path="feedback" element={<PortalFeedbackPage />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
