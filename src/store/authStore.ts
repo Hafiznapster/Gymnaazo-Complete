@@ -35,8 +35,10 @@ export const useAuthStore = create<AuthState>()(
       clear: () => set({ user: null, session: null, staffUser: null, memberUser: null, gym: null }),
     }),
     {
-      name: 'gymnazo-auth',
+      name: 'gymnazo-auth-v1',
       partialize: (state) => ({
+        user: state.user,
+        session: state.session,
         staffUser: state.staffUser,
         memberUser: state.memberUser,
         gym: state.gym,

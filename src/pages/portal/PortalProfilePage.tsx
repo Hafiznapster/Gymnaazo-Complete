@@ -4,22 +4,24 @@ import { Edit, MonitorWeight, Settings } from '@mui/icons-material'
 import { useAuthStore } from '@/store/authStore'
 import { useBodyMeasurements } from '@/hooks/useBodyMeasurements'
 import { formatDate } from '@/utils/formatters'
+import { supabase } from '@/lib/supabase'
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts'
 
 export default function PortalProfilePage() {
   const { memberUser, setAuth, setMemberUser } = useAuthStore()
   const { data: measurements } = useBodyMeasurements(memberUser?.id || '')
 
-  function handleLogout() {
+  async function handleLogout() {
+    await supabase.auth.signOut()
     setAuth(null, null)
     setMemberUser(null)
   }
 
   // Sort measurements for chart
   const chartData = (measurements ?? [])
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    .sort((a, b) => new Date(a.recorded_at).getTime() - new Date(b.recorded_at).getTime())
     .map((m) => ({
-      date: formatDate(m.date),
+      date: formatDate(m.recorded_at),
       weight: m.weight_kg
     }))
 

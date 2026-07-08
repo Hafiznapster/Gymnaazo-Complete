@@ -130,10 +130,10 @@ export default function PortalDashboardPage() {
                   <DirectionsRun sx={{ color: 'text.secondary', fontSize: 20 }} />
                   <Box flex={1}>
                     <Typography variant="body2" fontWeight={600}>
-                      {formatDate(log.check_in_time)}
+                      {formatDate(log.check_in_at)}
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
-                      Checked in at {formatTime(log.check_in_time)}
+                      Checked in at {formatTime(log.check_in_at)}
                     </Typography>
                   </Box>
                 </CardContent>
